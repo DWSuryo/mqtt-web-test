@@ -14,11 +14,11 @@
 #include <Ticker.h>
 #include <AsyncMqttClient.h>
 
-#define WIFI_SSID "Suryo Wicaksono"
-#define WIFI_PASSWORD "Sibayak174"
+#define WIFI_SSID "your SSIS"
+#define WIFI_PASSWORD "your password"
 
 // Raspberri Pi Mosquitto MQTT Broker
-#define MQTT_HOST IPAddress(192, 168, 100, 7)
+#define MQTT_HOST IPAddress(000, 000, 000, 000)   // server IP address
 // For a cloud MQTT broker, type the domain name
 //#define MQTT_HOST "example.com"
 #define MQTT_PORT 1883
