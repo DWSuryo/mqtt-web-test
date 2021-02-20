@@ -13,11 +13,11 @@
 
 
 // Change the credentials below, so your ESP8266 connects to your router
-const char* ssid = "your SSID";
-const char* password = "your password";
+const char* ssid = "Suryo Wicaksono ext";
+const char* password = "Sibayak174EXT";
 
 // Change the variable to your Raspberry Pi IP address, so it connects to your MQTT broker
-const char* mqtt_server = "server IP address";
+const char* mqtt_server = "192.168.100.2";
 
 // Initializes the espClient
 WiFiClient espClient;
@@ -167,7 +167,7 @@ void loop() {
     client.connect("ESP8266Client");
   now = millis();
   // Publishes new temperature and humidity every 10 seconds
-  if (now - lastMeasure > 10000) {
+  if (now - lastMeasure > 5000) {
     lastMeasure = now;
     // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
     float h = dht.readHumidity();

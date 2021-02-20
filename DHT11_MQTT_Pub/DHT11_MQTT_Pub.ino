@@ -14,25 +14,25 @@
 #include <Ticker.h>
 #include <AsyncMqttClient.h>
 
-#define WIFI_SSID "your SSIS"
-#define WIFI_PASSWORD "your password"
+#define WIFI_SSID "Suryo Wicaksono ext"
+#define WIFI_PASSWORD "Sibayak174EXT"
 
 // Raspberri Pi Mosquitto MQTT Broker
-#define MQTT_HOST IPAddress(000, 000, 000, 000)   // server IP address
+#define MQTT_HOST IPAddress(192, 168, 100, 2)
 // For a cloud MQTT broker, type the domain name
 //#define MQTT_HOST "example.com"
 #define MQTT_PORT 1883
 
 // Temperature MQTT Topics
-#define MQTT_PUB_TEMP "esp8266/dht/temperature"
-#define MQTT_PUB_HUM "esp8266/dht/humidity"
+#define MQTT_PUB_TEMP "esp8266/temperature"
+#define MQTT_PUB_HUM "esp8266/humidity"
 
 // Digital pin connected to the DHT sensor
-#define DHTPIN 16  
+#define DHTPIN 14  
 
 // Uncomment whatever DHT sensor type you're using
-//#define DHTTYPE DHT11   // DHT 11
-#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+#define DHTTYPE DHT11   // DHT 11
+//#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
 //#define DHTTYPE DHT21   // DHT 21 (AM2301)   
 
 // Initialize DHT sensor
@@ -50,7 +50,7 @@ WiFiEventHandler wifiDisconnectHandler;
 Ticker wifiReconnectTimer;
 
 unsigned long previousMillis = 0;   // Stores last time temperature was published
-const long interval = 10000;        // Interval at which to publish sensor readings
+const long interval = 5000;        // Interval at which to publish sensor readings
 
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");

@@ -11,7 +11,7 @@ import eventlet
 eventlet.monkey_patch()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'xDsTbiULqIrqXkO_X5kcyg'
-socketio = SocketIO(app)
+socketio = SocketIO(app, ping_interval=5, ping_timeout=10)
 CORS(app)
 
 # The callback for when the client receives a CONNACK response from the server.
