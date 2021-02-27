@@ -50,14 +50,11 @@ def on_message(client, userdata, message):
 
 # initialize mqtt broker
 mqttc=mqtt.Client(client_id="capstone")
-#broker = 'localhost'
-broker = 'mqtt.lunar-smart.com'
-port = 8883
-username = 'lunar'
-password = 'smartsystem'
+broker = 'localhost'
+port = 1883
 
 # launch mqtt
-mqttc.username_pw_set(username, password) #set user pass
+#mqttc.username_pw_set(username, password) #set user pass
 #mqttc=mqtt.Client(client_id="", clean_session=True, userdata=None, protocol=mqtt.MQTTv31)
 mqttc.on_connect = on_connect
 mqttc.on_message = on_message
