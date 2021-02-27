@@ -7,6 +7,8 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 import eventlet
+import datetime   # show date
+import csv        # for storing data
 
 eventlet.monkey_patch()
 app = Flask(__name__)
@@ -22,6 +24,7 @@ def on_connect(client, userdata, flags, rc):
     # reconnect then subscriptions will be renewed.
     client.subscribe("/esp8266/temperature")
     client.subscribe("/esp8266/humidity")
+    client.subscribe("/esp8266/kwh")
 
 # The callback for when a PUBLISH message is received from the ESP8266.
 def on_message(client, userdata, message):
@@ -29,18 +32,39 @@ def on_message(client, userdata, message):
    print("Received message '" + str(message.payload) + "' on topic '"
       + message.topic + "' with QoS " + str(message.qos))
    if message.topic == "/esp8266/temperature":
-      print("temperature update")
+      global temperature1
+      temperature1 = str(message.payload.decode('utf-8'))
+      print("temperature update " + temperature1)
       socketio.emit('dht_temperature', {'data': message.payload})
    if message.topic == "/esp8266/humidity":
-      print("humidity update")
+      global humidity1
+      humidity1 = str(message.payload.decode('utf-8'))
+      print("humidity update " +  humidity1)
       socketio.emit('dht_humidity', {'data': message.payload})
+   if message.topic == "/esp8266/kwh":
+      global kwh1
+      kwh1 = str(message.payload.decode('utf-8'))
+      print("kwh update " +  kwh1)
+      socketio.emit('energy_kwh', {'data': message.payload})
 
+
+# initialize mqtt broker
 mqttc=mqtt.Client(client_id="capstone")
+#broker = 'localhost'
+broker = 'mqtt.lunar-smart.com'
+port = 8883
+username = 'lunar'
+password = 'smartsystem'
+
+# launch mqtt
+mqttc.username_pw_set(username, password) #set user pass
 #mqttc=mqtt.Client(client_id="", clean_session=True, userdata=None, protocol=mqtt.MQTTv31)
 mqttc.on_connect = on_connect
 mqttc.on_message = on_message
-mqttc.connect("localhost",1883,60)
+mqttc.connect(broker,port,60)
 mqttc.loop_start()
+
+
 
 # Create a dictionary called pins to store the pin number, name, and pin state:
 pins = {
@@ -83,16 +107,33 @@ def action(board, changePin, action):
 
 @socketio.on('my event')
 def handle_my_custom_event(json):
-    print('received json data here: ' + str(json))
+   print('received json data here: ' + str(json))
 
 @socketio.on('my event1')
 def handle_my_temperature(json):
-    print('received json temperature here: ' + str(json))
+   print('received json temperature here: ' + str(json))
 
 @socketio.on('my event2')
 def handle_my_humidity(json):
-    print('received json humidity here: ' + str(json))
+   print('received json humidity here: ' + str(json))
+
+@socketio.on('my event3')
+def handle_my_kwh(json):
+   print('received json humidity here: ' + str(json))
 
 if __name__ == "__main__":
+   # opens and writes csv file
+   with open('sensor.csv', mode='a+') as file:
+      reader = csv.reader(file, delimiter=',')
+      writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+      line_count = 0
+      time = datetime.datetime.now()
+      #way to write to csv file
+      for row in reader:
+         if line_count == 0:
+            writer.writerow(['date','time','temperature','humidity','energy'])
+         else:
+            writer.writerow([time.strftime("%x"),time.strftime("%X"),temperature1,humidity1,kwh1])
+
    socketio.run(app, host='0.0.0.0', port=8080, debug=True)
 

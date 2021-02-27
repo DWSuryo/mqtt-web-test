@@ -59,6 +59,13 @@
             $('#humidity').text(enc.decode(msg.data));
             socket.emit('my event2', {data: "I\'m Humidity!"});
          });
+         socket.on('energy_kwh', function(msg) {
+            //var humdata = Number(ab2str(msg.data));
+            //$('#humidity').text(humdata).html();
+            console.log(enc.decode(msg.data));
+            $('#kwh').text(enc.decode(msg.data));
+            socket.emit('my event3', {data: "I\'m kWh!"});
+         });
       });
    </script>
 </head>
@@ -75,8 +82,9 @@
 		{% endif %}
    {% endfor %}
    <h2>Sensor Publish (updated <span id="readingsUpdated"></span>)</h2>
-      <h3>Temperature: <span id="temperature"></span>ºC</h3>
-      <h3>Humidity: <span id="humidity"></span>%</h3>
+      <h3>Temperature: <span id="temperature"></span> ºC</h3>
+      <h3>Humidity: <span id="humidity"></span> %</h3>
+      <h3>Energy: <span id="kwh"></span> kWh</h3>
 </body>
 
 
