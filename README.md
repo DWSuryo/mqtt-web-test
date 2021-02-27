@@ -5,5 +5,5 @@ Adding feature: show graphs with csv
 
 ## Issues (as 27/02/2021)
 
-- (17/02/2021) Sensors not shown in web     **Solved ✅**
-- (27/02/2021) csv cannot be wrritten       *in progress 🔄*
+- (17/02/2021) Sensors not shown in web     (**Solved ✅**)
+- (27/02/2021) csv cannot be wrritten       (*in progress 🔄*)
